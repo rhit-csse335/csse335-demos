@@ -1,0 +1,39 @@
+#!/bin/bash
+#PBS -N lu_gprofng_demo
+#PBS -l walltime=00:05:00
+#PBS -l nodes=1:ppn=1
+#PBS -l mem=1gb
+#PBS -j oe
+
+# Change to the directory where the job was submitted
+cd $PBS_O_WORKDIR
+
+# Load any necessary modules (adjust as needed for your cluster)
+# module load gcc
+
+# Print job information
+echo "Job started at: $(date)"
+echo "Job ID: $PBS_JOBID"
+echo "Running on node: $(hostname)"
+echo "Working directory: $(pwd)"
+echo ""
+
+# Build the program
+echo "Rebuilding lu_demo without profiling support..."
+make clean
+gcc -Wall -O2 -g -o lu_demo lu_demo.c
+
+# Run under gprofng's collector instead of running directly
+echo "Collecting profiling data with gprofng..."
+gprofng collect app -o lu_demo.er ./lu_demo
+
+# Generate a text report from the experiment directory
+echo "Generating gprofng report..."
+gprofng display text -functions -calltree lu_demo.er > gprofng_report.txt
+
+echo ""
+echo "Full report saved to: gprofng_report.txt"
+echo ""
+
+echo ""
+echo "Job completed at: $(date)"

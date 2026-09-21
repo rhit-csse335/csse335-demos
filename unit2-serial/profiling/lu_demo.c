@@ -120,7 +120,7 @@ void print_vector(const double *v, int n) {
 }
 
 int main() {
-    const int n = 128;
+    const int n = 256;
 
     printf("LU Factorization and Solve Demo (n=%d)\n", n);
     printf("=====================================\n\n");
