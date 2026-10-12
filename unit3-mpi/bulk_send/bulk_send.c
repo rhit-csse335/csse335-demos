@@ -50,6 +50,9 @@ int main(int argc, char** argv) {
     if (my_rank == 0)
         randomize_array(data_array);
 
+    // comment this out to see what a big different startup time makes
+    // MPI_Barrier(MPI_COMM_WORLD);
+
     struct timeval start_time;
     gettimeofday(&start_time, NULL);
 
